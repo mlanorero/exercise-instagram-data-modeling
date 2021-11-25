@@ -27,46 +27,31 @@ class Address(Base):
     person = relationship(Person)
 
 # Relación uno a uno: Un usuario puede crear un username o cuenta en Instagram
-class Person(Base):
-    __tablename__ = 'persona'
-    id = Column(Integer, primary_key=True)
-
 class User(Base):
-    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    parent_id = Column(Integer, ForeignKey('parent.id'))
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship(Person)
 
 # Uno a muchos: Uno usuario creado o username comienza a seguir muchos otros usuarios o Followings
-class Username(Base):
-    __tablename__ = 'username'
-    id = Column(Integer, primary_key=True)
-    children = relationship("Child")
-
 class Followings(Base):
     __tablename__ = 'followings'
     id = Column(Integer, primary_key=True)
-    parent_id = Column(Integer, ForeignKey('parent.id'))
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship(User)
 
 # Muchos a uno: comentarios: pueden haber muchos comentarios hacia un usuario
 class Posts(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
-    child_id = Column(Integer, ForeignKey('child.id'))
-    child = relationship("Child")
-
-class userN(Base):
-    __tablename__ = 'usern'
-    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship(User)
 
 #Muchos a muchos: El usuario puede tener muchos followers y hacer muchos followings
 class Followers(Base):
     __tablename__ = 'followers'
     id = Column(Integer, primary_key=True)
-    children = relationship("Child")
-
-class Following(Base):
-    __tablename__ = 'following'
-    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship(User)
 
     def to_dict(self):
         return {}
